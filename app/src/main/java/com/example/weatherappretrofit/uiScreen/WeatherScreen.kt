@@ -65,7 +65,9 @@ fun WeatherScreen(
         Spacer(modifier = Modifier.size(50.dp))
 
         Row(
-            modifier = Modifier.height(IntrinsicSize.Min),
+            modifier = Modifier
+                .padding(16.dp)
+                .height(IntrinsicSize.Min),
             verticalAlignment = Alignment.CenterVertically
         ) {
             OutlinedTextField(
@@ -83,32 +85,34 @@ fun WeatherScreen(
                     .weight(1f)
                     .fillMaxHeight(),
                 ) {
-                Text("Search", fontSize = 18.sp)
+                Text("Search", fontSize = 12.sp)
             }
         }
 
         Spacer(modifier = Modifier.height(32.dp))
 
         Box(modifier = Modifier.fillMaxSize()){
-            Card(
-                shape = MaterialTheme.shapes.extraLarge,
-                modifier = Modifier.align(Alignment.Center)
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
-                    modifier = Modifier.padding(16.dp)
+            if (state.isLoading || state.weather != null || state.error != null) {
+                Card(
+                    shape = MaterialTheme.shapes.extraLarge,
+                    modifier = Modifier.align(Alignment.Center)
                 ) {
-                    if (state.isLoading) {
-                        CircularProgressIndicator()
-                    }
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        if (state.isLoading) {
+                            CircularProgressIndicator()
+                        }
 
-                    state.weather?.let { weather ->
-                        WeatherInfo(weather)
-                    }
+                        state.weather?.let { weather ->
+                            WeatherInfo(weather)
+                        }
 
-                    state.error?.let {
-                        Text(it)
+                        state.error?.let {
+                            Text(it)
+                        }
                     }
                 }
             }
